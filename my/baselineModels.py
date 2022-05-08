@@ -87,7 +87,7 @@ class LstmNet(nn.Module):
         super(LstmNet, self).__init__()
         # set size
         self.in_features = in_features
-        self.seq_len     = seq_len 
+        self.seq_len = seq_len 
         self.class_num = class_num         
         self.rnn = nn.LSTM(in_features, in_features, num_layers=1)
         self.relu= nn.ReLU(inplace=False) 
