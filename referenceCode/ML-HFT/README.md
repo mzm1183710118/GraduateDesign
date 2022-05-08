@@ -101,4 +101,3 @@ The performance metrics are subject to amendment, including the PnL calculation,
 ### Final Words
 
 **There are tons of excellent features to be explored with trade data and depth ordebook data. So does the numerous powerful classifiers. In the Kaggle optiver volatility competition, the training data includes both trade and quote/orderbook, and it contains level-2 data. Many insightful feature engineering techniques and models can be discovered from the top solutions, which can also be applied in this framework.**
-
