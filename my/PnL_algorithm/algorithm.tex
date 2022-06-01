@@ -1,0 +1,44 @@
+\def\SetClass{article}
+\documentclass{\SetClass}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\begin{document}
+\begin{algorithm}
+\caption{Distributed privacy preserving sub-graph mining}\label{algorithm}
+\KwData{Each client maintains its local graph $LG_i$,
+all $LG_i$ constitute a global graph $GG$,    
+each node $n_{i}^{m}$ in $LG_i$ has its type $t_{i}^{m}$, there are $N_t$ types in total, 
+each directed edge also has its relation whether it belongs to $LG_i$ or across $LG_i$ and $LG_j$,
+all relation in $GG$ forms collection $R$.}
+\KwResult{legal sub-gragh of $GG$ with $K$ edges}
+
+Initial a multitree $T$ with an empty root\;
+Genarate $N_t$ TreeNodes with unique type at the next level in $T$\;
+$depth\leftarrow 0$ \;
+\For(){$depth<=K$}{
+\tcc{Expand as much as possible}
+\ForEach(){TreeNode $TN_i$ at $depth^{th}$ level of $T$}{
+Graph $g \leftarrow$ content of $TN_i$\;
+\ForEach{node $SouN_x$ in $g$}{
+    \ForEach{relation $r_p$ in $R$}{
+        \ForEach{node $TarN_y$ with unique type}{
+            Genarate graph pattern $\left(SouN_x,r_p,TarN_y\right)$\;
+            \eIf(){$g+\left(SouN_x,r_p,TarN_y\right)$ is legal judged by Algorithm2}{
+                $g_{new} \leftarrow g + pattern\left(SouN_x,r_p,TarN_y\right)$\;
+                A child of $TN_i \leftarrow TN_{ij}$ with content $g_{new}$ \;
+            }(){
+                continue\;
+            }
+        }
+    }
+}
+}
+\tcc{duplicate removal}
+\For{every different $\left(TN_i,TN_j\right)$ pairs at $depth^{th}$ level of $T$}{
+    \If(){$TN_i \iff TN_j$}{
+        Remove $TN_j$ from $T$\;
+    }
+}
+$depth\leftarrow depth+1$ \;
+}
+\end{algorithm}
+\end{document}

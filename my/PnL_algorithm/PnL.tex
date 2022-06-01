@@ -1,0 +1,53 @@
+\def\SetClass{article}
+\documentclass{\SetClass}
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\begin{document}
+\begin{algorithm}
+\caption{Backtesting Profit and Loss based on Prediction Model}\label{algorithm}
+\KwData{DataLoader $Loader$, selected prediction model $model$, number of sliding window $N$, extent of lagedPrice $laged$}
+\KwResult{An array describing changes in cash $CA$\; 
+An array describing changes in sumValue $SUM$\;
+An array describing results of prediction model $RA$}
+Initial MyAccount with 10000 cash\;
+$round\leftarrow 0$ \;
+$CA\leftarrow [10000]$ \;
+$RA\leftarrow [\ ]$\;
+An array describing values of stocks held $SV\leftarrow [0]$\;
+\ForEach(){$X$ in $Loader$}{
+    $round++$\;
+    $midPrice\leftarrow (bestAsk+beskBid)/2$\;
+    prediction $\widetilde{y}\leftarrow model(X)$\;
+    \uIf(){$\widetilde{y} means up$}{
+        $ask1_laged \leftarrow$ best askPrice at the next $laged$ timestep\;
+        $myAccount.buy(ask1_laged,ask1Volumu)$\;
+        \tcc{update 3 array}
+        $RA$ \textbf{append} 1\;
+        $CA$ \textbf{append} current cash\;
+        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+    }
+    \uElseIf{$\widetilde{y} means down$}{
+        $bid1_laged \leftarrow$ best bidPrice at the next $laged$ timestep\;
+        $myAccount.sell(bid1_laged,bid1Volumu)$\;
+     
+        $RA$ \textbf{append} -1\;
+        $CA$ \textbf{append} current cash\;
+        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+    }
+    \uElse(){
+        $RA$ \textbf{append} 0\;
+        $CA$ \textbf{append} current cash\;
+        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+    }
+    \uIf(){$round==N$}{
+        sell all stocks in myAccount using a market order\;
+
+        $RA$ \textbf{append} -1\;
+        $CA$ \textbf{append} current cash\;
+        $SV$ \textbf{append} 0\;
+        break\;
+    }
+}
+$SUM \leftarrow CA+SV$\;
+\textbf{return} $CA,SUM,RA$\;
+\end{algorithm}
+\end{document}
