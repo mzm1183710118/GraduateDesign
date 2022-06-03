@@ -15,28 +15,28 @@ $RA\leftarrow [\ ]$\;
 An array describing values of stocks held $SV\leftarrow [0]$\;
 \ForEach(){$X$ in $Loader$}{
     $round++$\;
-    $midPrice\leftarrow (bestAsk+beskBid)/2$\;
+    $midprice\leftarrow (bestAsk+beskBid)/2$\;
     prediction $\widetilde{y}\leftarrow model(X)$\;
-    \uIf(){$\widetilde{y} means up$}{
-        $ask1_laged \leftarrow$ best askPrice at the next $laged$ timestep\;
+    \uIf(){$\widetilde{y} == up$}{
+        $ask1_{laged} \leftarrow$ best ask price at the next $laged$ timestep\;
         $myAccount.buy(ask1_laged,ask1Volumu)$\;
         \tcc{update 3 array}
         $RA$ \textbf{append} 1\;
         $CA$ \textbf{append} current cash\;
-        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+        $SV$ \textbf{append} $midprice*\#Stocks$\;
     }
-    \uElseIf{$\widetilde{y} means down$}{
-        $bid1_laged \leftarrow$ best bidPrice at the next $laged$ timestep\;
+    \uElseIf{$\widetilde{y} == down$}{
+        $bid1_{laged} \leftarrow$ best bid price at the next $laged$ timestep\;
         $myAccount.sell(bid1_laged,bid1Volumu)$\;
      
         $RA$ \textbf{append} -1\;
         $CA$ \textbf{append} current cash\;
-        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+        $SV$ \textbf{append} $midprice*\#Stocks$\;
     }
     \uElse(){
         $RA$ \textbf{append} 0\;
         $CA$ \textbf{append} current cash\;
-        $SV$ \textbf{append} $midPrice*\#Stocks$\;
+        $SV$ \textbf{append} $midprice*\#Stocks$\;
     }
     \uIf(){$round==N$}{
         sell all stocks in myAccount using a market order\;
