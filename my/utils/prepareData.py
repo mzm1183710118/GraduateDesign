@@ -58,3 +58,32 @@ class Dataset(data.Dataset):
     def __getitem__(self, index):
         """Generates samples of data"""
         return self.x[index], self.y[index]
+
+def splitDataset(train_test_rate, train_val_rate, trian7path, test7path, test8path, test9path):
+    '''
+    train_test_rate: 训练集和测试集划分的比例，0.8表示训练集占据0.8，剩下的0.2属于测试集
+    train_val_rate: 训练集和验证集划分的比例，0.8表示训练集占据0.8，剩下的0.2属于验证集
+    '''
+    dec_data = np.loadtxt(trian7path)
+    dec_train = dec_data[:, :int(np.floor(dec_data.shape[1] * train_test_rate))]
+    dec_val = dec_data[:, int(np.floor(dec_data.shape[1] * train_val_rate)):]   
+
+    dec_test1 = np.loadtxt(test7path)
+    dec_test2 = np.loadtxt(test8path)
+    dec_test3 = np.loadtxt(test9path)
+    dec_test = np.hstack((dec_test1, dec_test2, dec_test3))
+    return dec_train, dec_val, dec_test
+
+def getDataLoader(dec_train, dec_val, dec_test, k=4, num_classes=3, T=100, batch_size=64):
+    '''
+    k代表使用第几个label
+    T代表对于每个样本点，一共采集多少个时间步的特征
+    '''
+    dataset_train = Dataset(data=dec_train, k=k, num_classes=num_classes, T=T)
+    dataset_val = Dataset(data=dec_val, k=k, num_classes=num_classes, T=T)
+    dataset_test = Dataset(data=dec_test, k=k, num_classes=num_classes, T=T)
+
+    train_loader = torch.utils.data.DataLoader(dataset=dataset_train, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(dataset=dataset_val, batch_size=batch_size, shuffle=False)
+    test_loader = torch.utils.data.DataLoader(dataset=dataset_test, batch_size=batch_size, shuffle=False)
+    return train_loader, val_loader, test_loader

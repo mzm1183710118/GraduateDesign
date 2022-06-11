@@ -1,0 +1,2 @@
+model_checkpoint_path: "stock2_final_40_y"
+all_model_checkpoint_paths: "stock2_final_40_y"
